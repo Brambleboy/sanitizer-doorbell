@@ -6,6 +6,7 @@ void setup() {
   pinMode(D1, INPUT_PULLUP);
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
+  Serial.begin(9600);
 }
 
 void loop() {
