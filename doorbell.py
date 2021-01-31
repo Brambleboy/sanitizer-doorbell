@@ -12,4 +12,4 @@ ser = serial.Serial('/dev/ttyUSB0', 9600)
 
 while 1:
     if(ser.readline()):
-        os.system('/usr/bin/omxplayer /home/pi/Desktop/Fart.mp3')
+        os.system('/usr/bin/omxplayer /home/pi/Desktop/Doorbell.mp3')
