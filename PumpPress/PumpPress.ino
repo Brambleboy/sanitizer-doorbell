@@ -1,23 +1,20 @@
 #include <ESP8266WiFi.h>
-#include <WiFiClient.h>
-#include <ESP8266WebServer.h>
 
 const char *ssid = "HandSansitizer";
 const char *password = "suspicious";
 
-ESP8266WebServer server(80);
-
 int val = 0;
 
-//Called when client connects
-void handleRoot() {
-  server.send(200, "text/plain", "Hello");
-}
+//const char* host = "192.168.4.1";
+const uint16_t port = 8888;
+
+WiFiServer server(port);
 
 void setup() {
   //Set up pins
   pinMode(D1, INPUT_PULLUP);
   pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
   
   //Set up WiFi
   delay(1000);
@@ -30,14 +27,27 @@ void setup() {
   IPAddress myIP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(myIP);
-  server.on("/", handleRoot);
+
   server.begin();
-  Serial.println("HTTP server started");
   
 }
 
 void loop() {
-  server.handleClient();
+
+  WiFiClient client = server.available();
+
+  if(client) {
+    if(client.connected()) {
+      Serial.println("Client connected");
+    }
+  }
+
+  while(client.connected()) {
+    client.write("test");
+  }
+  client.stop();
+  Serial.println("Client disconnected");
+  return;
   
   //Detect whether pump is pushed (HIGH is up, LOW is down)
   val = digitalRead(D1);
@@ -45,7 +55,7 @@ void loop() {
   if(val == LOW)
   {
     digitalWrite(LED_BUILTIN, LOW);
-    server.send(200, "text/plain", "yes");
+    //client.println("go");
     delay(2000);
   }
   digitalWrite(LED_BUILTIN, HIGH);
