@@ -1,20 +1,19 @@
 int val = 0;
 
 void setup() {
-  // put your setup code here, to run once:
+  //Set up pins
   pinMode(D1, INPUT_PULLUP);
   pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  //Detect whether pump is pushed (HIGH is up, LOW is down)
   val = digitalRead(D1);
+  //Wait a while before checking value again so pump can be pushed a few times without triggering again
   if(val == LOW)
   {
     digitalWrite(LED_BUILTIN, LOW);
     delay(2000);
   }
-
-  digitalWrite(LED_BUILTIN, HIGH); 
-  //digitalWrite(LED_BUILTIN, val);
+  digitalWrite(LED_BUILTIN, HIGH);
 }
